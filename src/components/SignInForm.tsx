@@ -1,12 +1,33 @@
+import { useForm } from '@tanstack/react-form';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 
+import { Button } from '@/components/ui/button';
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useSignIn } from '@/hooks/useSignIn';
+import { LoginUserSchema } from '@/schemas/userSchema';
 
 export default function SignInForm() {
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-  }
+  const { handleSubmit } = useSignIn();
+
+  const form = useForm({
+    defaultValues: {
+      identifier: '',
+      password: '',
+    },
+    validators: {
+      onSubmit: LoginUserSchema,
+    },
+    onSubmit: async ({ value, formApi }) => {
+      try {
+        await handleSubmit(value);
+        formApi.reset();
+      } catch (error: any) {
+        toast.error(error.response?.data?.message);
+      }
+    },
+  });
 
   return (
     <div className='flex min-h-screen flex-col bg-background'>
@@ -27,52 +48,88 @@ export default function SignInForm() {
             Log in to keep reading thoughtful posts and continue sharing your opinions.
           </p>
 
-          <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
-            <div className='flex flex-col gap-2'>
-              <Label
-                htmlFor='identifier'
-                className='text-xs font-normal tracking-widest text-muted-foreground uppercase'
-              >
-                Username or email
-              </Label>
-              <Input
-                id='identifier'
-                name='identifier'
-                type='text'
-                required
-                autoComplete='given-name'
-                placeholder='clara@hotmail.com'
-                className='h-10 rounded-none border-x-0 border-t-0 border-border bg-transparent px-0 text-base shadow-none transition-colors focus-visible:border-foreground focus-visible:ring-0'
-              />
-            </div>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              form.handleSubmit();
+            }}
+            className='flex flex-col gap-8'
+          >
+            <FieldGroup>
+              <div className='flex flex-col gap-2'>
+                <form.Field
+                  name='identifier'
+                  children={field => {
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
 
-            {/* Password */}
-            <div className='flex flex-col gap-2'>
-              <Label
-                htmlFor='password'
-                className='text-xs font-normal tracking-widest text-muted-foreground uppercase'
-              >
-                Password
-              </Label>
-              <Input
-                id='password'
-                name='password'
-                type='password'
-                required
-                autoComplete='new-password'
-                placeholder='&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;'
-                className='h-10 rounded-none border-x-0 border-t-0 border-border bg-transparent px-0 text-base shadow-none transition-colors focus-visible:border-foreground focus-visible:ring-0'
-              />
-            </div>
+                    return (
+                      <Field data-invalid={isInvalid}>
+                        <FieldLabel
+                          htmlFor={field.name}
+                          className='text-xs font-normal tracking-widest text-muted-foreground uppercase'
+                        >
+                          Username or email
+                        </FieldLabel>
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          type='text'
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={e => field.handleChange(e.target.value)}
+                          aria-invalid={isInvalid}
+                          autoComplete='given-name'
+                          placeholder='claraholt@gmail.com'
+                          className='h-10 rounded-none border-x-0 border-t-0 border-border bg-transparent px-0 text-base shadow-none transition-colors focus-visible:border-foreground focus-visible:ring-0'
+                        />
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                      </Field>
+                    );
+                  }}
+                />
+              </div>
 
-            {/* Submit */}
+              <div className='flex flex-col gap-2'>
+                <form.Field
+                  name='password'
+                  children={field => {
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+                    return (
+                      <Field data-invalid={isInvalid}>
+                        <FieldLabel
+                          htmlFor={field.name}
+                          className='text-xs font-normal tracking-widest text-muted-foreground uppercase'
+                        >
+                          Password
+                        </FieldLabel>
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          type='password'
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={e => field.handleChange(e.target.value)}
+                          aria-invalid={isInvalid}
+                          autoComplete='new-password'
+                          placeholder='&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;'
+                          className='h-10 rounded-none border-x-0 border-t-0 border-border bg-transparent px-0 text-base shadow-none transition-colors focus-visible:border-foreground focus-visible:ring-0'
+                        />
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                      </Field>
+                    );
+                  }}
+                />
+              </div>
+            </FieldGroup>
+
             <div className='flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center'>
-              <button
+              <Button
                 type='submit'
                 className='inline-flex items-center gap-2 bg-foreground px-8 py-4 text-xs tracking-widest text-primary-foreground uppercase transition-opacity hover:opacity-80'
               >
                 Sign in &rarr;
-              </button>
+              </Button>
               <p className='text-xs text-muted-foreground'>
                 Doesn't have an account?{' '}
                 <Link

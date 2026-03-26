@@ -8,3 +8,5 @@ export interface User {
   role: string;
   birthDate: Date;
 }
+
+export type AuthRole = 'user' | 'writer';

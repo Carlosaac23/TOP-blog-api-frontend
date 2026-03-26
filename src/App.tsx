@@ -1,41 +1,20 @@
-import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
-import type { User } from '@/types';
-
-import { getUsers } from '@/lib/getUsers';
+import SignInForm from '@/components/SignInForm';
+import SignUpForm from '@/components/SignUpForm';
+import PublicLayout from '@/layouts/PublicLayout';
+import Hero from '@/pages/Home';
 
 export default function App() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function getUsersData() {
-      try {
-        const data = await getUsers();
-        setUsers(data);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    getUsersData();
-  }, []);
-
-  if (loading) return <p>Loading...</p>;
-  console.log(users);
-
   return (
-    <>
-      <h1>Users</h1>
-      {users.map((user: User) => (
-        <div key={user.id}>
-          <h1>{user.name}</h1>
-          <h2>{user.lastName}</h2>
-          <p>{user.email}</p>
-        </div>
-      ))}
-    </>
+    <main>
+      <Routes>
+        <Route path='/' element={<PublicLayout />}>
+          <Route index element={<Hero />} />
+          <Route path='sign-up' element={<SignUpForm />} />
+          <Route path='sign-in' element={<SignInForm />} />
+        </Route>
+      </Routes>
+    </main>
   );
 }

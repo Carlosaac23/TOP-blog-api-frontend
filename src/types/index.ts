@@ -10,3 +10,8 @@ export interface User {
 }
 
 export type AuthRole = 'user' | 'writer';
+
+export type AuthContextType = {
+  auth: Record<string, unknown>;
+  logOut: () => void;
+};

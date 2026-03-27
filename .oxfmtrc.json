@@ -17,7 +17,9 @@
   },
   "sortTailwindcss": {
     "stylesheet": "./src/index.css",
+    "attributes": ["class", "className"],
     "functions": ["clsx", "cn"],
-    "preserveWhitespace": true,
+    "preserveWhitespace": false,
+    "preserveDuplicates": false,
   },
 }

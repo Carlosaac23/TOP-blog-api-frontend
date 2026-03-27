@@ -11,7 +11,16 @@ export interface User {
 
 export type AuthRole = 'user' | 'writer';
 
+export type AuthUser = {
+  sub?: string;
+  role?: AuthRole;
+  [key: string]: unknown;
+};
+
 export type AuthContextType = {
-  auth: Record<string, unknown>;
+  auth: AuthUser | null;
+  loadingAuth: boolean;
+  refreshAuth: () => Promise<void>;
+  signIn: (token: string) => Promise<void>;
   logOut: () => void;
 };

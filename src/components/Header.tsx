@@ -1,55 +1,74 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthProvider';
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'Sign Up', href: '/sign-up' },
+  { label: 'Sign In', href: '/sign-in' },
+  { label: 'Log Out', href: '/sign-in' },
 ];
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { auth, logOut } = useAuth();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logOut();
+    setMenuOpen(false);
+    navigate('/sign-in');
+  }
 
   return (
     <header className='sticky top-0 z-50 border-b border-border bg-background'>
       <div className='mx-auto flex max-w-6xl items-center justify-between px-6 py-6 md:py-8'>
         {/* Nav left */}
         <nav className='hidden items-center gap-12 md:flex' aria-label='Primary'>
-          {navLinks.slice(0, 1).map(link => (
-            // <a
-            //   key={link.label}
-            //   href={link.href}
-            //   className='text-xs tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground'
-            // >
-            //   {link.label}
-            // </a>
-            <Link
-              key={link.label}
-              className='text-xs tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground'
-              to={link.href}
-            >
-              {link.label}
-            </Link>
-          ))}
+          <Link
+            to='/home'
+            className='text-xs tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground'
+          >
+            Home
+          </Link>
         </nav>
 
-        <a
-          href='/'
+        <Link
+          to={auth?.sub ? '/home' : '/'}
           className='font-serif text-3xl font-semibold tracking-tight text-balance text-foreground md:text-4xl'
         >
           Bloggering
-        </a>
+        </Link>
 
         {/* Nav right */}
         <nav className='hidden items-center gap-12 md:flex' aria-label='Secondary'>
-          {navLinks.slice(1).map(link => (
-            <a
-              key={link.label}
-              href={link.href}
+          {auth?.sub ? (
+            <>
+              <Link
+                to='/home/profile'
+                className='text-xs tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground'
+              >
+                Profile
+              </Link>
+              <Button
+                type='button'
+                variant='ghost'
+                onClick={handleLogout}
+                className='text-xs tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground'
+              >
+                Log Out
+              </Button>
+            </>
+          ) : (
+            <Link
+              to='/sign-in'
               className='text-xs tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground'
             >
-              {link.label}
-            </a>
-          ))}
+              Sign In
+            </Link>
+          )}
         </nav>
 
         {/* Mobile menu button */}
@@ -76,12 +95,6 @@ export default function Header() {
           <span className='text-xs tracking-widest text-muted-foreground uppercase'>
             {new Date().toLocaleDateString('en-US', { dateStyle: 'medium' })}
           </span>
-          <a
-            href='#'
-            className='text-xs tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground'
-          >
-            Subscribe &rarr;
-          </a>
         </div>
       </div>
 
@@ -89,16 +102,30 @@ export default function Header() {
       {menuOpen && (
         <nav className='border-t border-border bg-background md:hidden' aria-label='Mobile'>
           <ul className='flex flex-col divide-y divide-border'>
-            {navLinks.map(link => (
-              <li key={link.label}>
-                <a
-                  href={link.href}
-                  className='block px-6 py-4 text-sm tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground'
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
+            {auth?.sub
+              ? navLinks.slice(2).map(link => (
+                  <li key={link.label}>
+                    <Button
+                      type='button'
+                      variant='ghost'
+                      onClick={handleLogout}
+                      className='block px-6 py-4 text-sm tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground'
+                    >
+                      {' '}
+                      {link.label}{' '}
+                    </Button>
+                  </li>
+                ))
+              : navLinks.slice(0, 2).map(link => (
+                  <li key={link.label}>
+                    <Link
+                      to={link.href}
+                      className='block px-6 py-4 text-sm tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground'
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
           </ul>
         </nav>
       )}

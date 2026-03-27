@@ -5,14 +5,12 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className='border-t border-border bg-background' role='contentinfo'>
+    <footer className='mt-auto border-t border-border bg-background' role='contentinfo'>
       <div className='mx-auto max-w-6xl px-6 py-16 md:py-20'>
         <div className='grid gap-14 md:grid-cols-3 md:gap-20'>
           {/* Brand */}
           <div className='flex flex-col gap-6'>
-            <span className='font-serif text-3xl font-semibold text-foreground'>
-              The Commonplace
-            </span>
+            <span className='font-serif text-3xl font-semibold text-foreground'>Bloggering</span>
             <p className='text-base leading-relaxed text-pretty text-muted-foreground'>
               A slow publication for thoughtful readers. Essays on culture, design, and the texture
               of everyday life.
@@ -43,8 +41,8 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className='mt-16 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 sm:flex-row sm:items-center'>
-          <p className='text-xs text-muted-foreground'>
-            &copy; 2026 The Commonplace. All rights reserved.
+          <p className=' text-xs text-muted-foreground'>
+            &copy; {new Date().getFullYear()} Bloggering. All rights reserved.
           </p>
           <p className='text-xs text-muted-foreground'>
             {new Date().toLocaleDateString('en-US', { dateStyle: 'medium' })}

@@ -6,6 +6,7 @@ import PrivateLayout from '@/layouts/PrivateLayout';
 import PublicLayout from '@/layouts/PublicLayout';
 import PublicHome from '@/pages/Home';
 import PrivateHome from '@/pages/private/Home';
+import PrivateProfile from '@/pages/private/Profile';
 
 export default function App() {
   return (
@@ -19,8 +20,9 @@ export default function App() {
         </Route>
 
         {/* Private Routes */}
-        <Route path='/profile' element={<PrivateLayout />}>
+        <Route path='/home' element={<PrivateLayout />}>
           <Route index element={<PrivateHome />} />
+          <Route path='profile' element={<PrivateProfile />} />
         </Route>
       </Routes>
     </main>

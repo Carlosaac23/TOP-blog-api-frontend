@@ -1,25 +1,19 @@
 import type { ReactNode } from 'react';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { toast } from 'sonner';
 
-import type { AuthContextType } from '@/types';
+import type { AuthContextType, AuthUser } from '@/types';
 
 import { axiosClient } from '@/config/axios';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [auth, setAuth] = useState({});
+  const [auth, setAuth] = useState<AuthUser | null>(null);
+  const [loadingAuth, setLoadingAuth] = useState(true);
 
-  async function authUser() {
-    const token = localStorage.getItem('bloggering_token');
-
-    if (!token) {
-      setAuth({});
-      return;
-    }
-
+  const fetchProfileByToken = useCallback(async (token: string) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -27,26 +21,58 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       },
     };
 
-    try {
-      const { data } = await axiosClient('/profile', config);
-      console.log('Data from axios:', data);
-      setAuth(data);
-    } catch (error: any) {
-      toast.error(error.response?.data?.message);
-      setAuth({});
-    }
-  }
-
-  useEffect(() => {
-    authUser();
+    const { data } = await axiosClient('/profile', config);
+    setAuth(data);
   }, []);
 
-  function logOut() {
-    localStorage.removeItem('bloggering_token');
-    setAuth({});
-  }
+  const refreshAuth = useCallback(async () => {
+    const token = localStorage.getItem('bloggering_token');
 
-  return <AuthContext.Provider value={{ auth, logOut }}>{children}</AuthContext.Provider>;
+    if (!token) {
+      setAuth(null);
+      return;
+    }
+
+    try {
+      await fetchProfileByToken(token);
+    } catch (error: any) {
+      localStorage.removeItem('bloggering_token');
+      setAuth(null);
+      toast.error(error.response?.data?.message ?? 'Sesion expired');
+    }
+  }, [fetchProfileByToken]);
+
+  const signIn = useCallback(
+    async (token: string) => {
+      localStorage.setItem('bloggering_token', token);
+      await fetchProfileByToken(token);
+    },
+    [fetchProfileByToken]
+  );
+
+  const logOut = useCallback(() => {
+    localStorage.removeItem('bloggering_token');
+    setAuth(null);
+  }, []);
+
+  useEffect(() => {
+    const boot = async () => {
+      try {
+        await refreshAuth();
+      } finally {
+        setLoadingAuth(false);
+      }
+    };
+
+    void boot();
+  }, [refreshAuth]);
+
+  const value = useMemo(
+    () => ({ auth, loadingAuth, refreshAuth, signIn, logOut }),
+    [auth, loadingAuth, refreshAuth, signIn, logOut]
+  );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

@@ -13,15 +13,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [auth, setAuth] = useState<AuthUser | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
 
-  const fetchProfileByToken = useCallback(async (token: string) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const { data } = await axiosClient('/profile', config);
+  const fetchProfile = useCallback(async () => {
+    const { data } = await axiosClient('/profile');
     setAuth(data);
   }, []);
 
@@ -34,20 +27,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      await fetchProfileByToken(token);
+      await fetchProfile();
     } catch (error: any) {
       localStorage.removeItem('bloggering_token');
       setAuth(null);
       toast.error(error.response?.data?.message ?? 'Sesion expired');
     }
-  }, [fetchProfileByToken]);
+  }, [fetchProfile]);
 
   const signIn = useCallback(
     async (token: string) => {
       localStorage.setItem('bloggering_token', token);
-      await fetchProfileByToken(token);
+      await fetchProfile();
     },
-    [fetchProfileByToken]
+    [fetchProfile]
   );
 
   const logOut = useCallback(() => {

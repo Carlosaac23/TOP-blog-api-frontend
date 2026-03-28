@@ -1,7 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 
-import SignInForm from '@/components/SignInForm';
-import SignUpForm from '@/components/SignUpForm';
+import CreatePost from '@/components/Forms/CreatePost';
+import SignIn from '@/components/Forms/SignIn';
+import SignUp from '@/components/Forms/SignUp';
 import PrivateLayout from '@/layouts/PrivateLayout';
 import PublicLayout from '@/layouts/PublicLayout';
 import PublicHome from '@/pages/Home';
@@ -15,14 +16,15 @@ export default function App() {
         {/* Public Routes */}
         <Route path='/' element={<PublicLayout />}>
           <Route index element={<PublicHome />} />
-          <Route path='sign-up' element={<SignUpForm />} />
-          <Route path='sign-in' element={<SignInForm />} />
+          <Route path='sign-up' element={<SignUp />} />
+          <Route path='sign-in' element={<SignIn />} />
         </Route>
 
         {/* Private Routes */}
         <Route path='/home' element={<PrivateLayout />}>
           <Route index element={<PrivateHome />} />
           <Route path='profile' element={<PrivateProfile />} />
+          <Route path='create-post' element={<CreatePost />} />
         </Route>
       </Routes>
     </main>

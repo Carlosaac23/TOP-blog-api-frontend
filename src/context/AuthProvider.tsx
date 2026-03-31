@@ -14,8 +14,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loadingAuth, setLoadingAuth] = useState(true);
 
   const fetchProfile = useCallback(async () => {
-    const { data } = await axiosClient('/profile');
-    setAuth(data);
+    const {
+      data: { profile },
+    } = await axiosClient('/');
+    setAuth(profile);
   }, []);
 
   const refreshAuth = useCallback(async () => {

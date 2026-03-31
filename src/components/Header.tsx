@@ -36,7 +36,7 @@ export default function Header() {
         </nav>
 
         <Link
-          to={auth?.sub ? '/home' : '/'}
+          to={auth?.id ? '/home' : '/'}
           className='font-serif text-3xl font-semibold tracking-tight text-balance text-foreground md:text-4xl'
         >
           Bloggering
@@ -44,7 +44,7 @@ export default function Header() {
 
         {/* Nav right */}
         <nav className='hidden items-center gap-12 md:flex' aria-label='Secondary'>
-          {auth?.sub ? (
+          {auth?.id ? (
             <>
               <Link
                 to='/home/profile'
@@ -102,7 +102,7 @@ export default function Header() {
       {menuOpen && (
         <nav className='border-t border-border bg-background md:hidden' aria-label='Mobile'>
           <ul className='flex flex-col divide-y divide-border'>
-            {auth?.sub
+            {auth?.id
               ? navLinks.slice(2).map(link => (
                   <li key={link.label}>
                     <Button

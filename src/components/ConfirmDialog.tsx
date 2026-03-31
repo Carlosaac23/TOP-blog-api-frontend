@@ -4,7 +4,11 @@ import { confirmable, createConfirmation } from 'react-confirm';
 
 import { Button } from '@/components/ui/button';
 
-const MyDialog = ({ show, proceed, message }: ConfirmDialogProps<{ message: string }, boolean>) => (
+const ConfirmDialog = ({
+  show,
+  proceed,
+  message,
+}: ConfirmDialogProps<{ message: string }, boolean>) => (
   <div
     className={`fixed inset-0 z-100 flex items-center justify-center bg-foreground/45 px-6 transition-opacity ${
       show ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
@@ -32,4 +36,4 @@ const MyDialog = ({ show, proceed, message }: ConfirmDialogProps<{ message: stri
   </div>
 );
 
-export const confirm = createConfirmation(confirmable(MyDialog));
+export const confirm = createConfirmation(confirmable(ConfirmDialog));

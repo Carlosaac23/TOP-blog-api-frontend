@@ -2,13 +2,27 @@ import { toast } from 'sonner';
 
 import type { CreateCommentInput } from '@/schemas/formSchema';
 
-import { axiosClient } from '@/config/axios';
-
+import { getToken } from '@/helpers/getToken';
 export function useCreateComment(postId: string) {
   const handleSubmit = async (values: CreateCommentInput) => {
-    const { data } = await axiosClient.post(`/posts/${postId}/comments`, values);
+    const token = getToken();
 
-    toast.success(data?.message ?? 'Comment created successfully');
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/posts/${postId}/comments`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(values),
+    });
+
+    const { message } = await res.json();
+    toast.success(message ?? 'Comment created successfully');
   };
 
   return { handleSubmit };

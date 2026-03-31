@@ -1,8 +1,24 @@
 import type { Post } from '@/types';
 
-import { axiosClient } from '@/config/axios';
+import { getToken } from '@/helpers/getToken';
 
 export async function getPosts(): Promise<Post[]> {
-  const { data } = await axiosClient('/posts');
-  return data;
+  const token = getToken();
+
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/posts`, { headers });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    throw new Error(errorData?.message ?? 'Failed to load comments');
+  }
+
+  return await res.json();
 }

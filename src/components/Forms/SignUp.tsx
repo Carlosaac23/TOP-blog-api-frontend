@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 import { useSignUp } from '@/hooks/useSignUp';
 import { CreateUserSchema } from '@/schemas/userSchema';
 
@@ -17,6 +18,7 @@ const defaultValues: CreateUserInput = {
   email: '',
   password: '',
   birthDate: '',
+  bio: '',
   role: 'user',
 };
 
@@ -225,6 +227,37 @@ export default function SignUpForm() {
                           autoComplete='new-password'
                           placeholder='&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;'
                           aria-invalid={isInvalid}
+                          onChange={e => field.handleChange(e.target.value)}
+                          className='h-10 rounded-none border-x-0 border-t-0 border-border bg-transparent px-0 text-base shadow-none transition-colors focus-visible:border-foreground focus-visible:ring-0'
+                        />
+                        {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                      </Field>
+                    );
+                  }}
+                />
+              </div>
+
+              <div className='flex flex-col gap-2'>
+                <form.Field
+                  name='bio'
+                  children={field => {
+                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+                    return (
+                      <Field data-invalid={isInvalid}>
+                        <FieldLabel
+                          htmlFor={field.name}
+                          className='text-xs font-normal tracking-widest text-muted-foreground uppercase'
+                        >
+                          Bio
+                        </FieldLabel>
+                        <Textarea
+                          id={field.name}
+                          name={field.name}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          aria-invalid={isInvalid}
+                          placeholder='I like reading Marco Aurelio'
                           onChange={e => field.handleChange(e.target.value)}
                           className='h-10 rounded-none border-x-0 border-t-0 border-border bg-transparent px-0 text-base shadow-none transition-colors focus-visible:border-foreground focus-visible:ring-0'
                         />

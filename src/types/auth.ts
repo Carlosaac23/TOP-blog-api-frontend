@@ -1,13 +1,15 @@
 export type AuthRole = 'user' | 'writer';
 
 export type AuthUser = {
-  sub?: string;
-  role?: AuthRole;
-  name?: string;
+  id?: string;
+  firstName: string;
+  lastName: string;
   username?: string;
   email?: string;
+  role?: AuthRole;
   createdAt?: string;
-  [key: string]: unknown;
+  bio: string;
+  birthDate: string;
 };
 
 export type AuthContextType = {

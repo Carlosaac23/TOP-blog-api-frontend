@@ -24,6 +24,7 @@ export const CreateUserSchema = z.object({
     const parsedDate = new Date(date);
     return !isNaN(parsedDate.getTime());
   }, 'Please enter a valid birth date.'),
+  bio: z.string().trim().min(1, 'Bio is required').max(150, 'Bio must be 150 characters of fewer'),
   role: z.enum(['user', 'writer'], {
     error: () => 'Please choose a valid role.',
   }),

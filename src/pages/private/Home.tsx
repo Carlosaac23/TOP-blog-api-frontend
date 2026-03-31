@@ -4,16 +4,16 @@ import { Link } from 'react-router-dom';
 import PostCard from '@/components/PostCard';
 import { Spinner } from '@/components/ui/spinner';
 import { useAuth } from '@/context/AuthProvider';
+import { sortPostsByDateDesc } from '@/helpers/sortPosts';
 import { useExpandedPost } from '@/hooks/useExpandedPost';
 import { usePostActions } from '@/hooks/usePostActions';
 import { usePosts } from '@/hooks/usePosts';
-import { sortPostsByDateDesc } from '@/lib/posts';
 
 export default function PrivateHome() {
   const { auth } = useAuth();
   const { posts, loading, error, refetch } = usePosts();
   const { expandedPostId, toggleComments } = useExpandedPost();
-  const { onDelete } = usePostActions(refetch);
+  const { onDeletePost } = usePostActions(refetch);
 
   const sortedPosts = useMemo(() => sortPostsByDateDesc(posts), [posts]);
 
@@ -29,7 +29,7 @@ export default function PrivateHome() {
           <h1 className='font-serif text-4xl leading-tight font-semibold text-foreground md:text-5xl'>
             All Posts
           </h1>
-          {auth?.role === 'writer' ? (
+          {auth?.role?.toLowerCase() === 'writer' ? (
             <Link
               to='/home/create-post'
               className='inline-flex items-center gap-2 border border-foreground bg-foreground px-6 py-3 text-xs tracking-widest text-background uppercase transition-colors hover:bg-background hover:text-foreground'
@@ -58,11 +58,11 @@ export default function PrivateHome() {
                 <PostCard
                   key={post.id}
                   post={post}
-                  canManage={auth?.role === 'writer' && auth?.sub === post.writerId}
-                  isUser={auth?.role === 'user'}
+                  canManage={auth?.role?.toLowerCase() === 'writer' && auth?.id === post.writerId}
+                  isUser={auth?.role?.toLowerCase() === 'user'}
                   isCommentsOpen={expandedPostId === post.id}
                   onToggleComments={() => toggleComments(post.id)}
-                  onDelete={() => onDelete(post.id)}
+                  onDelete={() => onDeletePost(post.id)}
                 />
               ))}
             </div>

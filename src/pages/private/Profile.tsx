@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 
 import { useAuth } from '@/context/AuthProvider';
-import { toSafeText } from '@/lib/text';
+import { toSafeText } from '@/helpers/safeText';
 
 export default function PrivateProfile() {
   const { auth } = useAuth();
 
-  const displayName = toSafeText(auth?.name, 'Anonymous Writer');
+  const name = `${auth?.firstName} ${auth?.lastName}`;
+  const displayName = toSafeText(name, 'Anonymous Writer');
   const username = toSafeText(auth?.username, 'unknown_user');
   const email = toSafeText(auth?.email, 'No email available');
   const role = toSafeText(auth?.role, 'user');
@@ -69,7 +70,7 @@ export default function PrivateProfile() {
         </div>
 
         <div className='flex gap-4'>
-          {auth?.role === 'writer' ? (
+          {auth?.role?.toLowerCase() === 'writer' ? (
             <>
               <Link
                 to='/home'

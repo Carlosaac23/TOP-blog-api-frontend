@@ -17,7 +17,7 @@ export default function PrivateLayout() {
     );
   }
 
-  if (!auth?.sub) {
+  if (!auth?.id) {
     return <Navigate to='/' replace />;
   }
 

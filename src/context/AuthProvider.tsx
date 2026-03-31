@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 
 import type { AuthContextType, AuthUser } from '@/types';
 
-import { axiosClient } from '@/config/axios';
+import { getProfile } from '@/lib/getProfile';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -14,9 +14,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loadingAuth, setLoadingAuth] = useState(true);
 
   const fetchProfile = useCallback(async () => {
-    const {
-      data: { profile },
-    } = await axiosClient('/');
+    const profile = await getProfile();
     setAuth(profile);
   }, []);
 

@@ -8,7 +8,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { useSignUp } from '@/hooks/useSignUp';
+import { useSignUp } from '@/hooks/auth/useSignUp';
 import { CreateUserSchema } from '@/schemas/userSchema';
 
 const defaultValues: CreateUserInput = {

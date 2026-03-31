@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { useSignIn } from '@/hooks/useSignIn';
+import { useSignIn } from '@/hooks/auth/useSignIn';
 import { LoginUserSchema } from '@/schemas/userSchema';
 
 export default function SignInForm() {

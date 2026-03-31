@@ -19,9 +19,9 @@ import {
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
-import { useCommentActions } from '@/hooks/useCommentActions';
-import { useComments } from '@/hooks/useComments';
-import { useCreateComment } from '@/hooks/useCreateComment';
+import { useCommentActions } from '@/hooks/comments/useCommentActions';
+import { useComments } from '@/hooks/comments/useComments';
+import { useCreateComment } from '@/hooks/comments/useCreateComment';
 import { CreateCommentSchema, type CreateCommentInput } from '@/schemas/formSchema';
 
 export default function PostCard({

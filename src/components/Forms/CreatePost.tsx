@@ -6,7 +6,7 @@ import type { CreatePostInput } from '@/schemas/formSchema';
 import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { useCreatePost } from '@/hooks/useCreatePost';
+import { useCreatePost } from '@/hooks/posts/useCreatePost';
 import { CreatePostSchema } from '@/schemas/formSchema';
 
 const defaultValues: CreatePostInput = {

@@ -1,6 +1,5 @@
 export interface User {
   id: string;
-  name: string;
   lastName: string;
   username: string;
   email: string;
@@ -16,4 +15,10 @@ export type Writer = {
   username: string;
   email: string;
   role: string;
+};
+
+export type UserComment = {
+  firstName: string;
+  lastName: string;
+  username: string;
 };

@@ -1,4 +1,4 @@
-import { useDeleteComment } from '@/hooks/useDeleteComment';
+import { useDeleteComment } from '@/hooks/comments/useDeleteComment';
 
 type RefetchFn = () => Promise<void>;
 

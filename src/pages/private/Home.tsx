@@ -5,9 +5,9 @@ import PostCard from '@/components/PostCard';
 import { Spinner } from '@/components/ui/spinner';
 import { useAuth } from '@/context/AuthProvider';
 import { sortPostsByDateDesc } from '@/helpers/sortPosts';
-import { useExpandedPost } from '@/hooks/useExpandedPost';
-import { usePostActions } from '@/hooks/usePostActions';
-import { usePosts } from '@/hooks/usePosts';
+import { usePostActions } from '@/hooks/posts/usePostActions';
+import { usePosts } from '@/hooks/posts/usePosts';
+import { useExpandedPost } from '@/hooks/ui/useExpandedPost';
 
 export default function PrivateHome() {
   const { auth } = useAuth();

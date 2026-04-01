@@ -2,19 +2,22 @@ import { toast } from 'sonner';
 
 import type { CreateUserInput } from '@/schemas/userSchema';
 
+import { apiFetchJson } from '@/lib/apiFetch';
+
+type ActionResponse = {
+  message: string;
+};
+
 export function useSignUp() {
   const handleSubmit = async (values: CreateUserInput) => {
     const rolePathUrl = values.role === 'user' ? 'users' : 'writers';
 
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${rolePathUrl}`, {
+    const { message } = await apiFetchJson<ActionResponse>(`/${rolePathUrl}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      auth: false,
       body: JSON.stringify(values),
     });
 
-    const { message } = await res.json();
     toast.success(message);
   };
 

@@ -3,19 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import type { LoginUserInput } from '@/schemas/userSchema';
 
 import { useAuth } from '@/context/AuthProvider';
+import { apiFetchJson } from '@/lib/apiFetch';
+
+type LoginResponse = {
+  token: string;
+};
+
 export function useSignIn() {
   const navigate = useNavigate();
   const { signIn } = useAuth();
 
   const handleSubmit = async (values: LoginUserInput) => {
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api`, {
+    const { token } = await apiFetchJson<LoginResponse>('/', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      auth: false,
       body: JSON.stringify(values),
     });
-    const { token } = await res.json();
 
     await signIn(token);
     navigate('/home');

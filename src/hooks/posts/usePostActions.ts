@@ -1,4 +1,4 @@
-import { useDeletePost } from '@/hooks/useDeletePost';
+import { useDeletePost } from '@/hooks/posts/useDeletePost';
 
 type RefetchFn = () => Promise<void>;
 export function usePostActions(refetch: RefetchFn) {

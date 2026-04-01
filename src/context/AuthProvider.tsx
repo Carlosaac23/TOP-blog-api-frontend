@@ -13,12 +13,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [auth, setAuth] = useState<AuthUser | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
 
-  const fetchProfile = useCallback(async () => {
-    const profile = await getProfile();
-    setAuth(profile);
-  }, []);
-
-  const refreshAuth = useCallback(async () => {
+  const loadProfile = useCallback(async () => {
     const token = localStorage.getItem('bloggering_token');
 
     if (!token) {
@@ -26,22 +21,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    const profile = await getProfile();
+    setAuth(profile);
+  }, []);
+
+  const refreshAuth = useCallback(async () => {
     try {
-      await fetchProfile();
+      await loadProfile();
     } catch (error: any) {
       localStorage.removeItem('bloggering_token');
       setAuth(null);
       toast.error(error.response?.data?.message ?? 'Sesion expired');
     }
-  }, [fetchProfile]);
+  }, [loadProfile]);
 
-  const signIn = useCallback(
-    async (token: string) => {
-      localStorage.setItem('bloggering_token', token);
-      await fetchProfile();
-    },
-    [fetchProfile]
-  );
+  const signIn = useCallback(async (token: string) => {
+    localStorage.setItem('bloggering_token', token);
+    const profile = await getProfile();
+    setAuth(profile);
+  }, []);
 
   const logOut = useCallback(() => {
     localStorage.removeItem('bloggering_token');
@@ -49,15 +47,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    let isMounted = true;
+
     const boot = async () => {
       try {
         await refreshAuth();
       } finally {
-        setLoadingAuth(false);
+        if (isMounted) setLoadingAuth(false);
       }
     };
 
     void boot();
+
+    return () => {
+      isMounted = false;
+    };
   }, [refreshAuth]);
 
   const value = useMemo(

@@ -24,7 +24,7 @@ export default function SignInForm() {
         await handleSubmit(value);
         formApi.reset();
       } catch (error: any) {
-        toast.error(error.response?.data?.message);
+        toast.error(error?.message);
       }
     },
   });

@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 
-import CreatePost from '@/components/Forms/CreatePost';
-import SignIn from '@/components/Forms/SignIn';
-import SignUp from '@/components/Forms/SignUp';
+import CreatePost from '@/components/forms/CreatePost';
+import SignIn from '@/components/forms/SignIn';
+import SignUp from '@/components/forms/SignUp';
 import PrivateLayout from '@/layouts/PrivateLayout';
 import PublicLayout from '@/layouts/PublicLayout';
 import PublicHome from '@/pages/Home';

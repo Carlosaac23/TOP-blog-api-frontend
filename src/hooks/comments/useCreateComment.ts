@@ -9,7 +9,7 @@ type ActionResponse = {
 };
 
 export function useCreateComment(postId: string) {
-  const handleSubmit = async (values: CreateCommentInput) => {
+  const handleCreate = async (values: CreateCommentInput) => {
     const { message } = await apiFetchJson<ActionResponse>(`/posts/${postId}/comments`, {
       method: 'POST',
       body: JSON.stringify(values),
@@ -18,5 +18,5 @@ export function useCreateComment(postId: string) {
     toast.success(message ?? 'Comment created successfully');
   };
 
-  return { handleSubmit };
+  return { handleCreate };
 }

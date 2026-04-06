@@ -34,11 +34,14 @@ export default function PostCard({
       </p>
 
       <PostCommentsSection
+        postId={post.id}
+        postTitle={post.title}
         isCommentsOpen={isCommentsOpen}
         comments={comments}
         isLoading={isLoading}
         onToggleComments={onToggleComments}
         onDeleteComment={onDeleteComment}
+        onCommentUpdated={refetchComments}
       />
     </article>
   );

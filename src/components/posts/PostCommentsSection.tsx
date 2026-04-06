@@ -1,22 +1,17 @@
-import type { Comment as CommentType } from '@/types';
+import type { PostCommentsSectionProps } from '@/types';
 
 import Comment from '@/components/Comment';
 import { Spinner } from '@/components/ui/spinner';
 
-type PostCommentsSectionProps = {
-  isCommentsOpen: boolean;
-  comments: CommentType[];
-  isLoading: boolean;
-  onToggleComments: () => void;
-  onDeleteComment: (commentId: string) => Promise<void> | void;
-};
-
 export default function PostCommentsSection({
+  postId,
+  postTitle,
   isCommentsOpen,
   comments,
   isLoading,
   onToggleComments,
   onDeleteComment,
+  onCommentUpdated,
 }: PostCommentsSectionProps) {
   return (
     <>
@@ -38,12 +33,16 @@ export default function PostCommentsSection({
             <ul className='space-y-3'>
               {comments.map(comment => (
                 <Comment
+                  commentId={comment.id}
+                  postId={postId}
+                  postTitle={postTitle}
                   key={comment.id}
                   userId={comment.userId}
                   content={comment.content}
                   createdAt={comment.createdAt}
                   user={comment.user}
                   onDelete={() => onDeleteComment(comment.id)}
+                  onCommentUpdated={onCommentUpdated}
                 />
               ))}
             </ul>

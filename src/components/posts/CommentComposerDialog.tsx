@@ -1,6 +1,8 @@
 import { useForm } from '@tanstack/react-form';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+
+import type { CommentComposerDialogProps } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,28 +18,35 @@ import {
 import { Field, FieldGroup, FieldLabel, FieldError } from '@/components/ui/field';
 import { Textarea } from '@/components/ui/textarea';
 import { useCreateComment } from '@/hooks/comments/useCreateComment';
+import { useUpdateComment } from '@/hooks/comments/useUpdateComment';
 import { CreateCommentSchema, type CreateCommentInput } from '@/schemas/formSchema';
-
-type CommentComposerDialogProps = {
-  postId: string;
-  postTitle: string;
-  onCommentCreated: () => Promise<void> | void;
-};
 
 export default function CommentComposerDialog({
   postId,
   postTitle,
   onCommentCreated,
+  mode = 'create',
+  commentId,
+  initialContent,
+  trigger,
 }: CommentComposerDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { handleSubmit } = useCreateComment(postId);
+  const { handleCreate } = useCreateComment(postId);
+  const { handleUpdate } = useUpdateComment();
+
+  const submitLabel = mode === 'create' ? 'Publish comment' : 'Update comment';
 
   const form = useForm({
     defaultValues: { content: '' } satisfies CreateCommentInput,
     validators: { onSubmit: CreateCommentSchema },
     onSubmit: async ({ value, formApi }) => {
       try {
-        await handleSubmit(value);
+        if (mode === 'edit' && commentId) {
+          handleUpdate(commentId, value);
+        } else {
+          await handleCreate(value);
+        }
+
         await onCommentCreated();
         formApi.reset();
         setIsOpen(false);
@@ -47,12 +56,20 @@ export default function CommentComposerDialog({
     },
   });
 
+  useEffect(() => {
+    if (isOpen) {
+      form.setFieldValue('content', initialContent ?? '');
+    }
+  }, [isOpen, initialContent, form]);
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button type='button' variant='default'>
-          Comment
-        </Button>
+        {trigger ?? (
+          <Button type='button' variant='default'>
+            Comment
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className='rounded-none border-border bg-background p-6 sm:max-w-xl'>
@@ -115,7 +132,8 @@ export default function CommentComposerDialog({
               type='submit'
               className='inline-flex items-center gap-2 bg-foreground px-6 py-3 text-xs tracking-widest text-primary-foreground uppercase transition-opacity hover:opacity-80'
             >
-              Publish comment &rarr;
+              {submitLabel}
+              <span aria-hidden='true'>&rarr;</span>
             </Button>
           </DialogFooter>
         </form>

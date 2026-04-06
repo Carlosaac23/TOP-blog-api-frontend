@@ -1,8 +1,19 @@
 import type { CommentCardProps } from '@/types';
 
+import CommentComposerDialog from '@/components/posts/CommentComposerDialog';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthProvider';
-export default function Comment({ userId, content, user, createdAt, onDelete }: CommentCardProps) {
+export default function Comment({
+  postId,
+  postTitle,
+  commentId,
+  userId,
+  content,
+  user,
+  createdAt,
+  onDelete,
+  onCommentUpdated,
+}: CommentCardProps) {
   const { auth } = useAuth();
 
   return (
@@ -17,11 +28,22 @@ export default function Comment({ userId, content, user, createdAt, onDelete }: 
         </p>
       </div>
 
-      <div>
+      <div className='flex gap-2'>
         {auth?.id === userId ? (
-          <Button type='button' variant='destructive' onClick={onDelete}>
-            Delete
-          </Button>
+          <>
+            <CommentComposerDialog
+              postId={postId}
+              postTitle={postTitle}
+              mode='edit'
+              commentId={commentId}
+              initialContent={content}
+              onCommentCreated={onCommentUpdated}
+              trigger={<Button type='button'>Edit</Button>}
+            />
+            <Button type='button' variant='destructive' onClick={onDelete}>
+              Delete
+            </Button>
+          </>
         ) : null}
       </div>
     </div>

@@ -13,7 +13,7 @@ export function useComments(post: Post, enabled = false) {
     try {
       setIsLoading(true);
       const data = await getCommentsByPost(post.id);
-      setComments(data);
+      setComments(data.comments);
       setError(null);
     } catch (error: any) {
       setError(error.response?.data?.message ?? 'Failed to load comments');

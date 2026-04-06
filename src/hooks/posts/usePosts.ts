@@ -13,7 +13,7 @@ export function usePosts() {
     try {
       setLoading(true);
       const data = await getPosts();
-      setPosts(data);
+      setPosts(data.posts);
       setError(null);
     } catch (error: any) {
       setError(error.response?.data?.message ?? 'Failed to load posts');

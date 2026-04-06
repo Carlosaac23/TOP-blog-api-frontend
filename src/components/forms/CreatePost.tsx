@@ -15,7 +15,7 @@ const defaultValues: CreatePostInput = {
 };
 
 export default function CreatePost() {
-  const { handleSubmit } = useCreatePost();
+  const { handleCreate } = useCreatePost();
 
   const form = useForm({
     defaultValues,
@@ -25,7 +25,7 @@ export default function CreatePost() {
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        await handleSubmit(value);
+        await handleCreate(value);
         formApi.reset();
       } catch (error: any) {
         toast.error(error.response?.data?.message);

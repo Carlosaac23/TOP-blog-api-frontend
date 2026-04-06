@@ -12,7 +12,7 @@ type ActionResponse = {
 export function useCreatePost() {
   const navigate = useNavigate();
 
-  const handleSubmit = async (values: CreatePostInput) => {
+  const handleCreate = async (values: CreatePostInput) => {
     const { message } = await apiFetchJson<ActionResponse>('/posts', {
       method: 'POST',
       body: JSON.stringify(values),
@@ -22,5 +22,5 @@ export function useCreatePost() {
     navigate('/home');
   };
 
-  return { handleSubmit };
+  return { handleCreate };
 }

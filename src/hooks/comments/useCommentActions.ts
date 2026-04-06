@@ -6,8 +6,8 @@ export function useCommentActions(refetch: RefetchFn) {
   const { handleDelete } = useDeleteComment();
 
   async function onDeleteComment(commentId: string) {
-    await handleDelete(commentId);
-    await refetch();
+    const deleted = await handleDelete(commentId);
+    if (deleted) await refetch();
   }
 
   return { onDeleteComment };

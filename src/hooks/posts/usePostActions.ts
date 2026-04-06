@@ -5,8 +5,8 @@ export function usePostActions(refetch: RefetchFn) {
   const { handleDelete } = useDeletePost();
 
   async function onDeletePost(postId: string) {
-    await handleDelete(postId);
-    await refetch();
+    const deleted = await handleDelete(postId);
+    if (deleted) await refetch();
   }
 
   return { onDeletePost };

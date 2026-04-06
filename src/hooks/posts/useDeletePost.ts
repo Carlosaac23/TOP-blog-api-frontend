@@ -10,6 +10,7 @@ type ActionResponse = {
 export function useDeletePost() {
   async function handleDelete(postId: string) {
     const result = await confirm({ message: 'Are you sure you want to delete this post?' });
+    if (!result) return false;
 
     if (result) {
       const { message } = await apiFetchJson<ActionResponse>(`/posts/${postId}`, {
@@ -17,6 +18,7 @@ export function useDeletePost() {
       });
 
       toast.success(message ?? 'Post deleted successfully');
+      return true;
     }
   }
 

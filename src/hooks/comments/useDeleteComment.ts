@@ -10,6 +10,7 @@ type ActionResponse = {
 export function useDeleteComment() {
   async function handleDelete(commentId: string) {
     const result = await confirm({ message: 'Are you sure you want to delete this comment?' });
+    if (!result) return false;
 
     if (result) {
       const { message } = await apiFetchJson<ActionResponse>(`/comments/${commentId}`, {
@@ -17,6 +18,7 @@ export function useDeleteComment() {
       });
 
       toast.success(message ?? 'Comment deleted successfully');
+      return true;
     }
   }
 

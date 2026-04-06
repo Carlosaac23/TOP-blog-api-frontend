@@ -2,7 +2,7 @@ import { useForm } from '@tanstack/react-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { FormInputField } from '@/components/forms/FormFields';
+import { FormInputField, FormRoleSwitchField } from '@/components/forms/FormFields';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { useSignIn } from '@/hooks/auth/useSignIn';
@@ -15,13 +15,14 @@ export default function SignInForm() {
     defaultValues: {
       identifier: '',
       password: '',
+      role: 'user',
     },
     validators: {
       onSubmit: LoginUserSchema,
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        await handleSubmit(value);
+        await handleSubmit({ ...value, role: value.role as 'user' | 'writer' });
         formApi.reset();
       } catch (error: any) {
         toast.error(error?.message);
@@ -75,6 +76,20 @@ export default function SignInForm() {
                       type='password'
                       placeholder='&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;'
                       autoComplete='new-password'
+                    />
+                  )}
+                </form.Field>
+              </div>
+
+              <div className='flex flex-col gap-2'>
+                <form.Field name='role'>
+                  {field => (
+                    <FormRoleSwitchField
+                      field={field}
+                      label='Role'
+                      leftLabel='User'
+                      rightLabel='Writer'
+                      ariaLabel='Toggle between User and Writer role'
                     />
                   )}
                 </form.Field>

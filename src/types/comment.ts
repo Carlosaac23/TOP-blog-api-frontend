@@ -15,6 +15,7 @@ export type Comment = {
 };
 
 export type CommentCardProps = {
+  userId: string;
   content: string;
   user: { username: string };
   createdAt: string;

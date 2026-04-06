@@ -1,8 +1,10 @@
 import type { CommentCardProps } from '@/types';
 
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthProvider';
+export default function Comment({ userId, content, user, createdAt, onDelete }: CommentCardProps) {
+  const { auth } = useAuth();
 
-export default function Comment({ content, user, createdAt, onDelete }: CommentCardProps) {
   return (
     <div className='flex items-center justify-between border border-border p-3'>
       <div>
@@ -16,9 +18,11 @@ export default function Comment({ content, user, createdAt, onDelete }: CommentC
       </div>
 
       <div>
-        <Button type='button' variant='destructive' onClick={onDelete}>
-          Delete
-        </Button>
+        {auth?.id === userId ? (
+          <Button type='button' variant='destructive' onClick={onDelete}>
+            Delete
+          </Button>
+        ) : null}
       </div>
     </div>
   );

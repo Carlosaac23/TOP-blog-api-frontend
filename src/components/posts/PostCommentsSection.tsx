@@ -39,6 +39,7 @@ export default function PostCommentsSection({
               {comments.map(comment => (
                 <Comment
                   key={comment.id}
+                  userId={comment.userId}
                   content={comment.content}
                   createdAt={comment.createdAt}
                   user={comment.user}

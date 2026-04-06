@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
 
+import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthProvider';
 import { toSafeText } from '@/helpers/safeText';
+import { useDeleteAccount } from '@/hooks/auth/useDeleteAccount';
 
 export default function PrivateProfile() {
   const { auth } = useAuth();
+  const { handleDelete } = useDeleteAccount();
 
   const name = `${auth?.firstName} ${auth?.lastName}`;
   const displayName = toSafeText(name, 'Anonymous Writer');
@@ -16,6 +19,11 @@ export default function PrivateProfile() {
     auth?.bio,
     'You have not added a bio yet. Share what you write about and what readers can expect from you.'
   );
+
+  function onDeleteAccount() {
+    if (!auth?.role || !auth?.id) return;
+    handleDelete(auth.role, auth.id);
+  }
 
   return (
     <section aria-label='Profile page' className='border-b border-border'>
@@ -84,14 +92,31 @@ export default function PrivateProfile() {
               >
                 Create post <span aria-hidden='true'>&rarr;</span>
               </Link>
+              <Button
+                type='button'
+                variant='destructive'
+                className='inline-flex items-center gap-2 border p-6 text-xs tracking-widest uppercase transition-colors'
+              >
+                Delete account
+              </Button>
             </>
           ) : (
-            <Link
-              to='/home'
-              className='inline-flex items-center gap-2 border border-foreground px-6 py-4 text-xs tracking-widest text-foreground uppercase transition-colors hover:bg-foreground hover:text-primary-foreground'
-            >
-              Back to posts <span aria-hidden='true'>&rarr;</span>
-            </Link>
+            <>
+              <Link
+                to='/home'
+                className='inline-flex items-center gap-2 border border-foreground px-6 py-4 text-xs tracking-widest text-foreground uppercase transition-colors hover:bg-foreground hover:text-primary-foreground'
+              >
+                Back to posts <span aria-hidden='true'>&rarr;</span>
+              </Link>
+              <Button
+                type='button'
+                variant='destructive'
+                className='inline-flex items-center gap-2 border p-6 text-xs tracking-widest uppercase transition-colors'
+                onClick={onDeleteAccount}
+              >
+                Delete account
+              </Button>
+            </>
           )}
         </div>
       </div>

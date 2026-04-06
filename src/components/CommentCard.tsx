@@ -3,7 +3,7 @@ import type { CommentCardProps } from '@/types';
 import CommentComposerDialog from '@/components/posts/CommentComposerDialog';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthProvider';
-export default function Comment({
+export default function CommentCard({
   postId,
   postTitle,
   commentId,

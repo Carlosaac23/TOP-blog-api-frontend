@@ -1,6 +1,6 @@
 import type { PostCommentsSectionProps } from '@/types';
 
-import Comment from '@/components/Comment';
+import CommentCard from '@/components/CommentCard';
 import { Spinner } from '@/components/ui/spinner';
 
 export default function PostCommentsSection({
@@ -32,7 +32,7 @@ export default function PostCommentsSection({
           ) : (
             <ul className='space-y-3'>
               {comments.map(comment => (
-                <Comment
+                <CommentCard
                   commentId={comment.id}
                   postId={postId}
                   postTitle={postTitle}

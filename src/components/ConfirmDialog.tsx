@@ -8,7 +8,8 @@ const ConfirmDialog = ({
   show,
   proceed,
   message,
-}: ConfirmDialogProps<{ message: string }, boolean>) => (
+  description,
+}: ConfirmDialogProps<{ message: string; description?: string }, boolean>) => (
   <div
     className={`fixed inset-0 z-100 flex items-center justify-center bg-foreground/45 px-6 transition-opacity ${
       show ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
@@ -23,6 +24,7 @@ const ConfirmDialog = ({
       </div>
 
       <p className='text-sm leading-relaxed text-foreground'>{message}</p>
+      {description && <p className='text-xs leading-relaxed text-foreground'>{description}</p>}
 
       <div className='mt-6 flex items-center justify-end gap-2'>
         <Button type='button' variant='outline' size='sm' onClick={() => proceed(false)}>

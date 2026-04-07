@@ -18,3 +18,14 @@ export type PostCardProps = {
   onToggleComments: () => void;
   onDelete: () => Promise<void> | void;
 };
+
+export type PostCardHeaderProps = {
+  postId: string;
+  title: string;
+  writerUsername?: string;
+  createdAt: string;
+  canManage: boolean;
+  isUser: boolean;
+  onDelete: () => Promise<void> | void;
+  onCommentCreated: () => Promise<void> | void;
+};

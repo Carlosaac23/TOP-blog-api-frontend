@@ -1,5 +1,3 @@
-import type { PostCardHeaderProps } from '@/types';
-
 import CommentComposerDialog from '@/components/posts/CommentComposerDialog';
 import { Button } from '@/components/ui/button';
 
@@ -12,7 +10,7 @@ export default function PostCardHeader({
   isUser,
   onDelete,
   onCommentCreated,
-}: PostCardHeaderProps) {
+}) {
   const createdAtDate = new Date(createdAt);
   const date = createdAtDate.toLocaleDateString('en-US', { dateStyle: 'medium' });
   const hour = createdAtDate.toLocaleTimeString('en-US', {

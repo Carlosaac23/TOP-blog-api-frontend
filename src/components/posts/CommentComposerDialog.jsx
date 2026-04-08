@@ -2,8 +2,6 @@ import { useForm } from '@tanstack/react-form';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
-import type { CommentComposerDialogProps } from '@/types';
-
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -19,7 +17,7 @@ import { Field, FieldGroup, FieldLabel, FieldError } from '@/components/ui/field
 import { Textarea } from '@/components/ui/textarea';
 import { useCreateComment } from '@/hooks/comments/useCreateComment';
 import { useUpdateComment } from '@/hooks/comments/useUpdateComment';
-import { CreateCommentSchema, type CreateCommentInput } from '@/schemas/formSchema';
+import { CreateCommentSchema } from '@/schemas/formSchema';
 
 export default function CommentComposerDialog({
   postId,
@@ -29,7 +27,7 @@ export default function CommentComposerDialog({
   commentId,
   initialContent,
   trigger,
-}: CommentComposerDialogProps) {
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const { handleCreate } = useCreateComment(postId);
   const { handleUpdate } = useUpdateComment();
@@ -37,7 +35,7 @@ export default function CommentComposerDialog({
   const submitLabel = mode === 'create' ? 'Publish comment' : 'Update comment';
 
   const form = useForm({
-    defaultValues: { content: '' } satisfies CreateCommentInput,
+    defaultValues: { content: '' },
     validators: { onSubmit: CreateCommentSchema },
     onSubmit: async ({ value, formApi }) => {
       try {

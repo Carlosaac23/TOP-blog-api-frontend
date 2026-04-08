@@ -1,5 +1,3 @@
-import type { PostCommentsSectionProps } from '@/types';
-
 import CommentCard from '@/components/CommentCard';
 import { Spinner } from '@/components/ui/spinner';
 
@@ -12,7 +10,7 @@ export default function PostCommentsSection({
   onToggleComments,
   onDeleteComment,
   onCommentUpdated,
-}: PostCommentsSectionProps) {
+}) {
   return (
     <>
       <button

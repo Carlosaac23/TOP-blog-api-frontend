@@ -1,15 +1,8 @@
-import type { ConfirmDialogProps } from 'react-confirm';
-
 import { confirmable, createConfirmation } from 'react-confirm';
 
 import { Button } from '@/components/ui/button';
 
-const ConfirmDialog = ({
-  show,
-  proceed,
-  message,
-  description,
-}: ConfirmDialogProps<{ message: string; description?: string }, boolean>) => (
+const ConfirmDialog = ({ show, proceed, message, description }) => (
   <div
     className={`fixed inset-0 z-100 flex items-center justify-center bg-foreground/45 px-6 transition-opacity ${
       show ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'

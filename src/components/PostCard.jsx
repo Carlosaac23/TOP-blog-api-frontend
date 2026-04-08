@@ -1,5 +1,3 @@
-import type { PostCardProps } from '@/types';
-
 import PostCardHeader from '@/components/posts/PostCardHeader';
 import PostCommentsSection from '@/components/posts/PostCommentsSection';
 import { useCommentActions } from '@/hooks/comments/useCommentActions';
@@ -12,7 +10,7 @@ export default function PostCard({
   isCommentsOpen,
   onToggleComments,
   onDelete,
-}: PostCardProps) {
+}) {
   const { comments, isLoading, refetchComments } = useComments(post, isCommentsOpen);
   const { onDeleteComment } = useCommentActions(refetchComments);
 

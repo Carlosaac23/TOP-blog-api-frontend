@@ -1,5 +1,3 @@
-import type { CommentCardProps } from '@/types';
-
 import CommentComposerDialog from '@/components/posts/CommentComposerDialog';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthProvider';
@@ -13,7 +11,7 @@ export default function CommentCard({
   createdAt,
   onDelete,
   onCommentUpdated,
-}: CommentCardProps) {
+}) {
   const { auth } = useAuth();
 
   return (

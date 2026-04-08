@@ -19,7 +19,7 @@ async function getErrorMessage(res) {
   return res.statusText || 'Request failed';
 }
 
-export async function apiFetchJson(path, options) {
+export async function apiFetchJson(path, options = {}) {
   const token = getToken();
   const headers = new Headers(options.headers);
 

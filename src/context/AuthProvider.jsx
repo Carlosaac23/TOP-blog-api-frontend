@@ -1,16 +1,12 @@
-import type { ReactNode } from 'react';
-
 import { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { toast } from 'sonner';
 
-import type { AuthContextType, AuthUser } from '@/types';
-
 import { getProfile } from '@/lib/getProfile';
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext(null);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [auth, setAuth] = useState<AuthUser | null>(null);
+export function AuthProvider({ children }) {
+  const [auth, setAuth] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
 
   const loadProfile = useCallback(async () => {
@@ -28,14 +24,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refreshAuth = useCallback(async () => {
     try {
       await loadProfile();
-    } catch (error: any) {
+    } catch (error) {
       localStorage.removeItem('bloggering_token');
       setAuth(null);
       toast.error(error.response?.data?.message ?? 'Sesion expired');
     }
   }, [loadProfile]);
 
-  const signIn = useCallback(async (token: string) => {
+  const signIn = useCallback(async token => {
     localStorage.setItem('bloggering_token', token);
     const profile = await getProfile();
     setAuth(profile);

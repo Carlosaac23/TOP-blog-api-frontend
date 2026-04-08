@@ -4,14 +4,10 @@ import { toast } from 'sonner';
 import { confirm } from '@/components/ConfirmDialog';
 import { apiFetchJson } from '@/lib/apiFetch';
 
-type ActionResponse = {
-  message: string;
-};
-
 export function useDeleteAccount() {
   const navigate = useNavigate();
 
-  async function handleDelete(role: string, accountId: string) {
+  async function handleDelete(role, accountId) {
     const result = await confirm({
       message: 'Are you sure you want to delete your account?',
       description: 'This action is ireversible',
@@ -19,7 +15,7 @@ export function useDeleteAccount() {
 
     if (result) {
       const path = role === 'User' ? 'users' : 'writers';
-      const { message } = await apiFetchJson<ActionResponse>(`/${path}/${accountId}`, {
+      const { message } = await apiFetchJson(`/${path}/${accountId}`, {
         method: 'DELETE',
       });
 

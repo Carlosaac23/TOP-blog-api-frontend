@@ -1,19 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import type { CreatePostInput } from '@/schemas/formSchema';
-
 import { apiFetchJson } from '@/lib/apiFetch';
-
-type ActionResponse = {
-  message: string;
-};
 
 export function useCreatePost() {
   const navigate = useNavigate();
 
-  const handleCreate = async (values: CreatePostInput) => {
-    const { message } = await apiFetchJson<ActionResponse>('/posts', {
+  const handleCreate = async values => {
+    const { message } = await apiFetchJson('/posts', {
       method: 'POST',
       body: JSON.stringify(values),
     });

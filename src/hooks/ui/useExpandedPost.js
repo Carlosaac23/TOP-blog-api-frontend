@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 export function useExpandedPost() {
-  const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
+  const [expandedPostId, setExpandedPostId] = useState(null);
 
-  function toggleComments(postId: string) {
+  function toggleComments(postId) {
     setExpandedPostId(current => (current === postId ? null : postId));
   }
 

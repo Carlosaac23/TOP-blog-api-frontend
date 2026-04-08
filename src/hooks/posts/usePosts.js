@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import type { Post } from '@/types';
-
 import { getPosts } from '@/lib/getPosts';
 
 export function usePosts() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
 
   const refetch = async () => {
     try {
@@ -15,7 +13,7 @@ export function usePosts() {
       const data = await getPosts();
       setPosts(data.posts);
       setError(null);
-    } catch (error: any) {
+    } catch (error) {
       setError(error.response?.data?.message ?? 'Failed to load posts');
     } finally {
       setLoading(false);

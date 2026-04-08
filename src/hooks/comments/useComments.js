@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import type { Comment, Post } from '@/types';
-
 import { getCommentsByPost } from '@/lib/getComments';
 
-export function useComments(post: Post, enabled = false) {
-  const [comments, setComments] = useState<Comment[]>([]);
+export function useComments(post, enabled = false) {
+  const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
 
   const refetchComments = async () => {
     try {
@@ -15,7 +13,7 @@ export function useComments(post: Post, enabled = false) {
       const data = await getCommentsByPost(post.id);
       setComments(data.comments);
       setError(null);
-    } catch (error: any) {
+    } catch (error) {
       setError(error.response?.data?.message ?? 'Failed to load comments');
     } finally {
       setIsLoading(false);

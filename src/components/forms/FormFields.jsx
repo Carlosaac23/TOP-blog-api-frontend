@@ -1,25 +1,13 @@
-import type {
-  FormInputFieldProps,
-  FormRoleSwitchFieldProps,
-  FormTextareaFieldProps,
-} from '@/types';
-
 import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 
-function getIsInvalid(field: any) {
+function getIsInvalid(field) {
   return field.state.meta.isTouched && !field.state.meta.isValid;
 }
 
-export function FormInputField({
-  field,
-  label,
-  type = 'text',
-  placeholder,
-  autoComplete,
-}: FormInputFieldProps) {
+export function FormInputField({ field, label, type = 'text', placeholder, autoComplete }) {
   const isInvalid = getIsInvalid(field);
 
   return (
@@ -47,13 +35,7 @@ export function FormInputField({
   );
 }
 
-export function FormTextareaField({
-  field,
-  label,
-  placeholder,
-  rows = 8,
-  textareaClassname = '',
-}: FormTextareaFieldProps) {
+export function FormTextareaField({ field, label, placeholder, rows = 8, textareaClassname = '' }) {
   const isInvalid = getIsInvalid(field);
 
   return (
@@ -80,13 +62,7 @@ export function FormTextareaField({
   );
 }
 
-export function FormRoleSwitchField({
-  field,
-  label,
-  leftLabel,
-  rightLabel,
-  ariaLabel,
-}: FormRoleSwitchFieldProps) {
+export function FormRoleSwitchField({ field, label, leftLabel, rightLabel, ariaLabel }) {
   const isInvalid = getIsInvalid(field);
 
   return (

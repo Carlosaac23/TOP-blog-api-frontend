@@ -22,9 +22,9 @@ export default function SignInForm() {
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        await handleSubmit({ ...value, role: value.role as 'user' | 'writer' });
+        await handleSubmit(value);
         formApi.reset();
-      } catch (error: any) {
+      } catch (error) {
         toast.error(error?.message);
       }
     },

@@ -1,8 +1,6 @@
 import { useForm } from '@tanstack/react-form';
 import { Link } from 'react-router-dom';
 
-import type { CreateUserInput } from '@/schemas/userSchema';
-
 import {
   FormInputField,
   FormTextareaField,
@@ -12,17 +10,6 @@ import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { useSignUp } from '@/hooks/auth/useSignUp';
 import { CreateUserSchema } from '@/schemas/userSchema';
-
-const defaultValues: CreateUserInput = {
-  firstName: '',
-  lastName: '',
-  username: '',
-  email: '',
-  password: '',
-  birthDate: '',
-  bio: '',
-  role: 'user',
-};
 
 export default function SignUpForm() {
   const { handleSubmit } = useSignUp();

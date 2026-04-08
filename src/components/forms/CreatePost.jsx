@@ -1,18 +1,11 @@
 import { useForm } from '@tanstack/react-form';
 import { toast } from 'sonner';
 
-import type { CreatePostInput } from '@/schemas/formSchema';
-
 import { FormInputField, FormTextareaField } from '@/components/forms/FormFields';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { useCreatePost } from '@/hooks/posts/useCreatePost';
 import { CreatePostSchema } from '@/schemas/formSchema';
-
-const defaultValues: CreatePostInput = {
-  title: '',
-  content: '',
-};
 
 export default function CreatePost() {
   const { handleCreate } = useCreatePost();
@@ -27,7 +20,7 @@ export default function CreatePost() {
       try {
         await handleCreate(value);
         formApi.reset();
-      } catch (error: any) {
+      } catch (error) {
         toast.error(error.response?.data?.message);
       }
     },

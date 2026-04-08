@@ -7,7 +7,7 @@ import { Toaster } from '@/components/ui/sonner';
 import '@/index.css';
 import { AuthProvider } from '@/context/AuthProvider';
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
       <BrowserRouter>

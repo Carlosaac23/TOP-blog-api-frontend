@@ -1,10 +1,6 @@
 import { getToken } from '@/helpers/getToken';
 
-type ApiFetchOptions = RequestInit & {
-  auth?: boolean;
-};
-
-async function getErrorMessage(res: Response) {
+async function getErrorMessage(res) {
   const contentType = res.headers.get('content-type') ?? '';
 
   if (contentType.includes('application/json')) {
@@ -23,7 +19,7 @@ async function getErrorMessage(res: Response) {
   return res.statusText || 'Request failed';
 }
 
-export async function apiFetchJson<T>(path: string, options: ApiFetchOptions = {}): Promise<T> {
+export async function apiFetchJson(path, options) {
   const token = getToken();
   const headers = new Headers(options.headers);
 
@@ -44,5 +40,5 @@ export async function apiFetchJson<T>(path: string, options: ApiFetchOptions = {
     throw new Error(await getErrorMessage(res));
   }
 
-  return (await res.json()) as T;
+  return await res.json();
 }

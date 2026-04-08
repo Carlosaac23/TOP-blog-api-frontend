@@ -30,12 +30,8 @@ export const CreateUserSchema = z.object({
   }),
 });
 
-export type CreateUserInput = z.infer<typeof CreateUserSchema>;
-
 export const LoginUserSchema = z.object({
   identifier: z.string().min(1, 'Please enter your username or email.'),
   password: z.string().min(1, 'Please enter your password.'),
   role: z.enum(['user', 'writer']),
 });
-
-export type LoginUserInput = z.infer<typeof LoginUserSchema>;

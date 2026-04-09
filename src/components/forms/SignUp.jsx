@@ -115,7 +115,7 @@ export default function SignUpForm() {
                     <FormTextareaField
                       field={field}
                       label='Bio'
-                      placeholder='I like reading Marco Aurelio'
+                      placeholder='I write about frontend architecture and developer experience.'
                       rows={5}
                     />
                   )}

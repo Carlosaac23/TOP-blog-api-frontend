@@ -1,13 +1,14 @@
+import { Link } from 'react-router-dom';
+
 export default function PublicHome() {
   return (
     <section aria-label='Featured post' className='border-b border-border'>
       <div className='mx-auto max-w-6xl px-6 py-16 md:py-24'>
         <div className='grid items-center gap-12 md:grid-cols-2 md:gap-20'>
-          {/* Text side */}
           <div className='order-2 flex flex-col gap-8 md:order-1'>
             <div className='flex items-center gap-4'>
               <span className='text-xs tracking-widest text-muted-foreground uppercase'>
-                Featured Essay
+                Start reading
               </span>
               <span className='h-px flex-1 bg-border' />
             </div>
@@ -29,20 +30,20 @@ export default function PublicHome() {
               </div>
             </div>
 
-            <a
-              href='#'
+            <Link
+              to='/sign-up'
               className='inline-flex items-center gap-2 self-start border border-foreground px-6 py-4 text-xs tracking-widest text-foreground uppercase transition-colors hover:bg-foreground hover:text-primary-foreground'
             >
-              Read Essay <span aria-hidden='true'>&rarr;</span>
-            </a>
+              Start reading
+              <span aria-hidden='true'>&rarr;</span>
+            </Link>
           </div>
 
-          {/* Image side */}
           <div className='relative order-1 aspect-4/3 overflow-hidden md:order-2'>
             <img
               className='object-cover'
               src='/images/featured.jpg'
-              alt='A leather journal and cup of coffe on linen cloth'
+              alt='A leather journal and cup of coffee on linen cloth'
             />
           </div>
         </div>

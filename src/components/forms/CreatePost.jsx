@@ -70,7 +70,7 @@ export default function CreatePost({ mode = 'create' }) {
                         ? 'Updating post...'
                         : 'Update post'
                       : isSubmitting
-                        ? 'Publishing'
+                        ? 'Publishing...'
                         : 'Publish post'}
                     <span aria-hidden='true'>&rarr;</span>
                   </Button>

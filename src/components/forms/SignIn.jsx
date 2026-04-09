@@ -20,10 +20,10 @@ export default function SignInForm() {
           </div>
 
           <h1 className='mb-4 font-serif text-5xl leading-tight font-semibold text-balance text-foreground md:text-6xl'>
-            Welcome Back
+            Welcome back
           </h1>
           <p className='mb-12 text-base leading-relaxed text-muted-foreground'>
-            Log in to keep reading thoughtful posts and continue sharing your opinions.
+            Log in to keep reading thoughtful posts and continue commenting on posts.
           </p>
 
           <form
@@ -84,7 +84,7 @@ export default function SignInForm() {
                 Sign in &rarr;
               </Button>
               <p className='text-xs text-muted-foreground'>
-                Doesn't have an account?{' '}
+                Don't have an account?{' '}
                 <Link
                   className='text-foreground underline underline-offset-4 transition-opacity hover:opacity-70'
                   to='/sign-up'

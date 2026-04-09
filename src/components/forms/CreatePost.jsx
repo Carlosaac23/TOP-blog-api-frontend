@@ -1,55 +1,10 @@
-import { useForm } from '@tanstack/react-form';
-import { useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
-import { toast } from 'sonner';
-
 import { FormInputField, FormTextareaField } from '@/components/forms/FormFields';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
-import { useCreatePost } from '@/hooks/posts/useCreatePost';
-import { useUpdatePost } from '@/hooks/posts/useUpdatePost';
-import { CreatePostSchema } from '@/schemas/formSchema';
+import { usePostForm } from '@/hooks/posts/usePostForm';
 
 export default function CreatePost({ mode = 'create' }) {
-  const { handleCreate } = useCreatePost();
-  const { handleUpdate } = useUpdatePost();
-  const { postId } = useParams();
-  const { state } = useLocation();
-
-  const stateValues = state?.post;
-
-  const form = useForm({
-    defaultValues: {
-      title: mode === 'edit' ? (stateValues?.title ?? '') : '',
-      content: mode === 'edit' ? (stateValues?.content ?? '') : '',
-    },
-    validators: {
-      onSubmit: CreatePostSchema,
-      onBlur: CreatePostSchema,
-    },
-    onSubmit: async ({ value, formApi }) => {
-      try {
-        if (mode === 'edit') {
-          await handleUpdate(postId, value);
-        } else {
-          await handleCreate(value);
-        }
-
-        formApi.reset();
-      } catch (error) {
-        toast.error(error.response?.data?.message);
-      }
-    },
-  });
-
-  useEffect(() => {
-    if (mode !== 'edit' || !stateValues) return;
-
-    form.reset({
-      title: stateValues.title ?? '',
-      content: stateValues.content ?? '',
-    });
-  }, [mode, stateValues, form]);
+  const { form, pageTitle, pageDescription } = usePostForm({ mode });
 
   return (
     <div className='flex min-h-screen flex-col bg-background'>
@@ -63,11 +18,9 @@ export default function CreatePost({ mode = 'create' }) {
           </div>
 
           <h1 className='mb-4 font-serif text-5xl leading-tight font-semibold text-balance text-foreground md:text-6xl'>
-            Create Post
+            {pageTitle}
           </h1>
-          <p className='mb-12 text-base leading-relaxed text-muted-foreground'>
-            Share a thoughtful story, idea, or tutorial with your readers.
-          </p>
+          <p className='mb-12 text-base leading-relaxed text-muted-foreground'>{pageDescription}</p>
 
           <form
             onSubmit={e => {

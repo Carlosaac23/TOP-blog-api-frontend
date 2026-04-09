@@ -4,7 +4,16 @@ import { CreateUserSchema } from '@/schemas/userSchema';
 
 export function useSignUpForm({ handleSubmit }) {
   const form = useForm({
-    defaultValues,
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      username: '',
+      email: '',
+      password: '',
+      birthDate: '',
+      bio: '',
+      role: 'user',
+    },
     validators: {
       onSubmit: CreateUserSchema,
       onBlur: CreateUserSchema,

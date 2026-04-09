@@ -25,6 +25,7 @@ export default function App() {
           <Route index element={<PrivateHome />} />
           <Route path='profile' element={<PrivateProfile />} />
           <Route path='create-post' element={<CreatePost />} />
+          <Route path='edit-post/:postId' element={<CreatePost mode='edit' />} />
         </Route>
       </Routes>
     </main>

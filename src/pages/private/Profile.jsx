@@ -96,6 +96,7 @@ export default function PrivateProfile() {
                 type='button'
                 variant='destructive'
                 className='inline-flex items-center gap-2 border p-6 text-xs tracking-widest uppercase transition-colors'
+                onClick={onDeleteAccount}
               >
                 Delete account
               </Button>

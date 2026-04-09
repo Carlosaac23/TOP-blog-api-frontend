@@ -1,0 +1,47 @@
+import PostCardHeader from '@/components/posts/PostCardHeader';
+import PostCommentsSection from '@/components/posts/PostCommentsSection';
+import { useCommentActions } from '@/hooks/comments/useCommentActions';
+import { useComments } from '@/hooks/comments/useComments';
+
+export default function PostCard({
+  post,
+  canManage,
+  isUser,
+  isCommentsOpen,
+  onToggleComments,
+  onDelete,
+}) {
+  const { comments, isLoading, refetchComments } = useComments(post, isCommentsOpen);
+  const { onDeleteComment } = useCommentActions(refetchComments);
+
+  return (
+    <article className='border border-border p-6'>
+      <PostCardHeader
+        postId={post.id}
+        title={post.title}
+        content={post.content}
+        writer={post.writer}
+        createdAt={post.createdAt}
+        canManage={canManage}
+        isUser={isUser}
+        onDelete={onDelete}
+        onCommentCreated={refetchComments}
+      />
+
+      <p className='mb-4 line-clamp-3 text-sm leading-relaxed text-muted-foreground'>
+        {post.content}
+      </p>
+
+      <PostCommentsSection
+        postId={post.id}
+        postTitle={post.title}
+        isCommentsOpen={isCommentsOpen}
+        comments={comments}
+        isLoading={isLoading}
+        onToggleComments={onToggleComments}
+        onDeleteComment={onDeleteComment}
+        onCommentUpdated={refetchComments}
+      />
+    </article>
+  );
+}

@@ -7,16 +7,16 @@
     "jsx-a11y": {
       "polymorphicPropName": null,
       "components": {},
-      "attributes": {}
+      "attributes": {},
     },
     "next": {
-      "rootDir": []
+      "rootDir": [],
     },
     "react": {
       "formComponents": [],
       "linkComponents": [],
       "version": null,
-      "componentWrapperFunctions": []
+      "componentWrapperFunctions": [],
     },
     "jsdoc": {
       "ignorePrivate": false,
@@ -26,17 +26,17 @@
       "augmentsExtendsReplacesDocs": false,
       "implementsReplacesDocs": false,
       "exemptDestructuredRootsFromChecks": false,
-      "tagNamePreference": {}
+      "tagNamePreference": {},
     },
     "vitest": {
-      "typecheck": false
-    }
+      "typecheck": false,
+    },
   },
   "env": {
     "builtin": true,
     "browser": true,
-    "node": true
+    "node": true,
   },
   "globals": {},
-  "ignorePatterns": []
+  "ignorePatterns": [],
 }

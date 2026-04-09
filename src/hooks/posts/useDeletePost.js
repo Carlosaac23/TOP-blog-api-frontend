@@ -1,0 +1,22 @@
+import { toast } from 'sonner';
+
+import { confirm } from '@/components/ConfirmDialog';
+import { apiFetchJson } from '@/lib/apiFetch';
+
+export function useDeletePost() {
+  async function handleDelete(postId) {
+    const result = await confirm({ message: 'Are you sure you want to delete this post?' });
+    if (!result) return false;
+
+    if (result) {
+      const { message } = await apiFetchJson(`/posts/${postId}`, {
+        method: 'DELETE',
+      });
+
+      toast.success(message ?? 'Post deleted successfully');
+      return true;
+    }
+  }
+
+  return { handleDelete };
+}

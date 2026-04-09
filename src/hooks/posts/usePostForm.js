@@ -48,10 +48,10 @@ export function usePostForm({ mode }) {
     });
   }, [mode, stateValues, form]);
 
-  const pageTitle = mode === 'edit' ? 'Edit post' : 'Create post';
+  const pageTitle = mode === 'edit' ? 'Edit Post' : 'Create Post';
   const pageDescription =
     mode === 'edit'
-      ? 'Update your post and save your changes'
+      ? 'Update your post and save your changes.'
       : 'Share a thoughtful story, idea, or tutorial with your readers.';
 
   return { form, pageTitle, pageDescription };

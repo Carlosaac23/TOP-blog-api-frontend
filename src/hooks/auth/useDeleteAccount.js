@@ -10,7 +10,7 @@ export function useDeleteAccount() {
   async function handleDelete(role, accountId) {
     const result = await confirm({
       message: 'Are you sure you want to delete your account?',
-      description: 'This action is ireversible',
+      description: 'This action is irreversible',
     });
 
     if (result) {
@@ -19,7 +19,7 @@ export function useDeleteAccount() {
         method: 'DELETE',
       });
 
-      toast.success(message ?? 'Account delete successfully');
+      toast.success(message ?? 'Account deleted successfully');
       navigate('/');
     }
   }

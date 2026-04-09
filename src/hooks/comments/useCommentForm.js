@@ -28,7 +28,7 @@ export function useCommentForm({ postId, onCommentCreated, mode, commentId, init
         formApi.reset();
         setIsOpen(false);
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : 'Failed to created comment');
+        toast.error(error instanceof Error ? error.message : 'Failed to create comment');
       }
     },
   });

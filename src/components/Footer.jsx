@@ -1,24 +1,19 @@
-const footerLinks = {
-  Topics: ['Essays', 'Culture', 'Design', 'Philosophy', 'Travel'],
-  Connect: ['About', 'Contributors', 'Archive', 'Contact'],
-};
+import { footerNavLinks } from '@/helpers/arrays';
 
 export default function Footer() {
   return (
     <footer className='mt-auto border-t border-border bg-background' role='contentinfo'>
       <div className='mx-auto max-w-6xl px-6 py-16 md:py-20'>
-        <div className='grid gap-14 md:grid-cols-3 md:gap-20'>
-          {/* Brand */}
+        <div className='grid gap-14 md:grid-cols-4 md:gap-20'>
           <div className='flex flex-col gap-6'>
             <span className='font-serif text-3xl font-semibold text-foreground'>Bloggering</span>
             <p className='text-base leading-relaxed text-pretty text-muted-foreground'>
-              A slow publication for thoughtful readers. Essays on culture, design, and the texture
-              of everyday life.
+              Bloggering is an online blog platform where writers publish posts and readers join the
+              conversation.
             </p>
           </div>
 
-          {/* Links */}
-          {Object.entries(footerLinks).map(([group, links]) => (
+          {Object.entries(footerNavLinks).map(([group, links]) => (
             <div key={group} className='flex flex-col gap-6'>
               <h3 className='text-xs font-semibold tracking-widest text-muted-foreground uppercase'>
                 {group}
@@ -39,9 +34,8 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Bottom bar */}
         <div className='mt-16 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 sm:flex-row sm:items-center'>
-          <p className=' text-xs text-muted-foreground'>
+          <p className='text-xs text-muted-foreground'>
             &copy; {new Date().getFullYear()} Bloggering. All rights reserved.
           </p>
           <p className='text-xs text-muted-foreground'>

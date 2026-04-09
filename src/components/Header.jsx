@@ -4,12 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthProvider';
-
-const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Sign In', href: '/sign-in' },
-  { label: 'Log Out', href: '/sign-in' },
-];
+import { headerNavLinks } from '@/helpers/arrays';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -25,7 +20,6 @@ export default function Header() {
   return (
     <header className='sticky top-0 z-50 border-b border-border bg-background'>
       <div className='mx-auto flex max-w-6xl items-center justify-between px-6 py-6 md:py-8'>
-        {/* Nav left */}
         <nav className='hidden items-center gap-12 md:flex' aria-label='Primary'>
           <Link
             to='/home'
@@ -42,7 +36,6 @@ export default function Header() {
           Bloggering
         </Link>
 
-        {/* Nav right */}
         <nav className='hidden items-center gap-12 md:flex' aria-label='Secondary'>
           {auth?.id ? (
             <>
@@ -71,7 +64,6 @@ export default function Header() {
           )}
         </nav>
 
-        {/* Mobile menu button */}
         <button
           className='flex flex-col gap-1.5 p-1 text-foreground md:hidden'
           onClick={() => setMenuOpen(!menuOpen)}
@@ -98,12 +90,11 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
         <nav className='border-t border-border bg-background md:hidden' aria-label='Mobile'>
           <ul className='flex flex-col divide-y divide-border'>
             {auth?.id
-              ? navLinks.slice(2).map(link => (
+              ? headerNavLinks.slice(2).map(link => (
                   <li key={link.label}>
                     <Button
                       type='button'
@@ -116,7 +107,7 @@ export default function Header() {
                     </Button>
                   </li>
                 ))
-              : navLinks.slice(0, 2).map(link => (
+              : headerNavLinks.slice(0, 2).map(link => (
                   <li key={link.label}>
                     <Link
                       to={link.href}

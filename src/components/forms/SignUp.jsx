@@ -1,4 +1,3 @@
-import { useForm } from '@tanstack/react-form';
 import { Link } from 'react-router-dom';
 
 import {
@@ -9,26 +8,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { useSignUp } from '@/hooks/auth/useSignUp';
-import { CreateUserSchema } from '@/schemas/userSchema';
+import { useSignUpForm } from '@/hooks/auth/useSignUpForm';
 
 export default function SignUpForm() {
   const { handleSubmit } = useSignUp();
-
-  const form = useForm({
-    defaultValues,
-    validators: {
-      onSubmit: CreateUserSchema,
-      onBlur: CreateUserSchema,
-    },
-    onSubmit: async ({ value, formApi }) => {
-      try {
-        await handleSubmit(value);
-        formApi.reset();
-      } catch {
-        // Keep value so user can fix and retry
-      }
-    },
-  });
+  const { form } = useSignUpForm({ handleSubmit });
 
   return (
     <div className='flex min-h-screen flex-col bg-background'>

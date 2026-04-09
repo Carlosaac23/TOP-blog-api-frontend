@@ -1,34 +1,14 @@
-import { useForm } from '@tanstack/react-form';
 import { Link } from 'react-router-dom';
-import { toast } from 'sonner';
 
 import { FormInputField, FormRoleSwitchField } from '@/components/forms/FormFields';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { useSignIn } from '@/hooks/auth/useSignIn';
-import { LoginUserSchema } from '@/schemas/userSchema';
+import { useSignInForm } from '@/hooks/auth/useSignInForm';
 
 export default function SignInForm() {
   const { handleSubmit } = useSignIn();
-
-  const form = useForm({
-    defaultValues: {
-      identifier: '',
-      password: '',
-      role: 'user',
-    },
-    validators: {
-      onSubmit: LoginUserSchema,
-    },
-    onSubmit: async ({ value, formApi }) => {
-      try {
-        await handleSubmit(value);
-        formApi.reset();
-      } catch (error) {
-        toast.error(error?.message);
-      }
-    },
-  });
+  const { form } = useSignInForm({ handleSubmit });
 
   return (
     <div className='flex min-h-screen flex-col bg-background'>

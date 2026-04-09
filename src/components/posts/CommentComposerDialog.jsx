@@ -1,7 +1,3 @@
-import { useForm } from '@tanstack/react-form';
-import { useState, useEffect } from 'react';
-import { toast } from 'sonner';
-
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -15,9 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Field, FieldGroup, FieldLabel, FieldError } from '@/components/ui/field';
 import { Textarea } from '@/components/ui/textarea';
-import { useCreateComment } from '@/hooks/comments/useCreateComment';
-import { useUpdateComment } from '@/hooks/comments/useUpdateComment';
-import { CreateCommentSchema } from '@/schemas/formSchema';
+import { useCommentForm } from '@/hooks/comments/useCommentForm';
 
 export default function CommentComposerDialog({
   postId,
@@ -28,37 +22,13 @@ export default function CommentComposerDialog({
   initialContent,
   trigger,
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const { handleCreate } = useCreateComment(postId);
-  const { handleUpdate } = useUpdateComment();
-
-  const submitLabel = mode === 'create' ? 'Publish comment' : 'Update comment';
-
-  const form = useForm({
-    defaultValues: { content: '' },
-    validators: { onSubmit: CreateCommentSchema },
-    onSubmit: async ({ value, formApi }) => {
-      try {
-        if (mode === 'edit' && commentId) {
-          handleUpdate(commentId, value);
-        } else {
-          await handleCreate(value);
-        }
-
-        await onCommentCreated();
-        formApi.reset();
-        setIsOpen(false);
-      } catch (error) {
-        toast.error(error instanceof Error ? error.message : 'Failed to created comment');
-      }
-    },
+  const { form, submitLabel, isOpen, setIsOpen } = useCommentForm({
+    postId,
+    onCommentCreated,
+    mode,
+    commentId,
+    initialContent,
   });
-
-  useEffect(() => {
-    if (isOpen) {
-      form.setFieldValue('content', initialContent ?? '');
-    }
-  }, [isOpen, initialContent, form]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

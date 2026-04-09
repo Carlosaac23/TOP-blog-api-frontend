@@ -1,10 +1,13 @@
+import { Link } from 'react-router-dom';
+
 import CommentComposerDialog from '@/components/posts/CommentComposerDialog';
 import { Button } from '@/components/ui/button';
 
 export default function PostCardHeader({
   postId,
   title,
-  writerUsername,
+  content,
+  writer,
   createdAt,
   canManage,
   isUser,
@@ -24,15 +27,19 @@ export default function PostCardHeader({
       <div className='space-y-2'>
         <h2 className='font-serif text-2xl leading-tight font-semibold text-foreground'>{title}</h2>
         <p className='text-xs tracking-widest text-muted-foreground uppercase'>
-          {writerUsername ?? 'unknown writer'} • {date} • {hour}
+          {writer?.username ?? 'unknown writer'} • {date} • {hour}
         </p>
       </div>
 
       {canManage ? (
         <div className='flex items-center gap-2'>
-          <Button type='button' variant='outline' size='sm'>
+          <Link
+            to={`/home/edit-post/${postId}`}
+            state={{ post: { title, content } }}
+            className='flex h-8 items-center justify-center gap-1 border-border bg-input/30 px-3 hover:bg-input/50 hover:text-foreground has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 aria-expanded:bg-muted aria-expanded:text-foreground'
+          >
             Edit
-          </Button>
+          </Link>
           <Button type='button' variant='destructive' size='sm' onClick={onDelete}>
             Delete
           </Button>

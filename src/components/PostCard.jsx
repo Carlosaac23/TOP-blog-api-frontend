@@ -19,7 +19,8 @@ export default function PostCard({
       <PostCardHeader
         postId={post.id}
         title={post.title}
-        writerUsername={post.writer?.username}
+        content={post.content}
+        writer={post.writer}
         createdAt={post.createdAt}
         canManage={canManage}
         isUser={isUser}

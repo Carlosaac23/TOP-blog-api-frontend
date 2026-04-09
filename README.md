@@ -1,73 +1,154 @@
-# React + TypeScript + Vite
+# Bloggering Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React frontend for the Bloggering API.
 
-Currently, two official plugins are available:
+This app supports public browsing, authentication, role-based access (user/writer), post management, and comments through a Vite-powered SPA.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
 
-## React Compiler
+- React 19
+- Vite 8
+- React Router 7
+- Tailwind CSS 4
+- shadcn/ui + Radix UI primitives
+- TanStack Form
+- Zod
+- Sonner (toast notifications)
+- Oxc (`oxlint` + `oxfmt`)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- Public landing page
+- Sign up and sign in flows
+- Auth persistence with token-based session (`localStorage`)
+- Protected private routes (`/home/*`)
+- Post list and post detail cards
+- Writer-only post creation, editing, and deletion
+- Comment creation, update, and deletion
+- Profile view + account deletion
+- Responsive layout with shared public/private headers and footers
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Project Structure
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+src/
+  components/        Reusable components and form/UI building blocks
+  components/ui/     Low-level UI primitives
+  context/           Global providers (AuthProvider)
+  helpers/           Utility helpers
+  hooks/             Domain hooks (auth, posts, comments, ui)
+  layouts/           Route wrappers (public/private)
+  lib/               Shared API and data-fetching utilities
+  pages/             Route-level pages
+  schemas/           Zod validation schemas
+public/              Static assets
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Routes
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Public
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- `/` - landing page
+- `/sign-up` - account creation
+- `/sign-in` - login
+
+### Private (requires auth)
+
+- `/home` - dashboard with posts
+- `/home/profile` - profile page
+- `/home/create-post` - create post (writer role)
+- `/home/edit-post/:postId` - edit post (writer role)
+
+## API Integration
+
+Auth behavior:
+
+- Token key: `bloggering_token`
+- Stored in `localStorage`
+- Sent as `Authorization: Bearer <token>` by default
+
+### Expected Core Endpoints
+
+- `POST /api/` (sign in)
+- `GET /api/` (profile)
+- `POST /api/users` (user sign up)
+- `POST /api/writers` (writer sign up)
+- `DELETE /api/users/:id` / `DELETE /api/writers/:id` (delete account)
+- `GET /api/posts`
+- `POST /api/posts`
+- `PUT /api/posts/:id`
+- `DELETE /api/posts/:id`
+- `GET /api/posts/:postId/comments`
+- `POST /api/posts/:postId/comments`
+- `PUT /api/comments/:id`
+- `DELETE /api/comments/:id`
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- npm (lockfile is `package-lock.json`)
+
+### Install dependencies
+
+```bash
+npm install
 ```
+
+### Run development server
+
+```bash
+npm run dev
+```
+
+Default local URL: `http://localhost:5173`
+
+### Build for production
+
+```bash
+npm run build
+```
+
+### Preview production build
+
+```bash
+npm run preview
+```
+
+## Quality Gates
+
+Run these before opening a PR:
+
+```bash
+npm run lint
+npm run fmt:check
+npm run build
+```
+
+Optional autofix commands:
+
+```bash
+npm run lint:fix
+npm run fmt
+```
+
+## Deployment
+
+This project contains `vercel.json` and can be deployed on Vercel as a static Vite app.
+
+Typical flow:
+
+1. Build with `npm run build`
+2. Deploy `dist/` (or connect repo to Vercel for automatic builds)
+
+## Contributing
+
+- Follow Conventional Commits (e.g., `feat: ...`, `fix: ...`, `chore: ...`)
+- Keep route/auth logic in `layouts` and `context` layers
+- Keep presentational components focused on UI
+- Use `@/` alias for imports from `src`
+
+## License
+
+No license file is currently defined in this repository.

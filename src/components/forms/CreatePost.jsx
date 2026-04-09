@@ -1,30 +1,55 @@
 import { useForm } from '@tanstack/react-form';
+import { useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { FormInputField, FormTextareaField } from '@/components/forms/FormFields';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { useCreatePost } from '@/hooks/posts/useCreatePost';
+import { useUpdatePost } from '@/hooks/posts/useUpdatePost';
 import { CreatePostSchema } from '@/schemas/formSchema';
 
-export default function CreatePost() {
+export default function CreatePost({ mode = 'create' }) {
   const { handleCreate } = useCreatePost();
+  const { handleUpdate } = useUpdatePost();
+  const { postId } = useParams();
+  const { state } = useLocation();
+
+  const stateValues = state?.post;
 
   const form = useForm({
-    defaultValues,
+    defaultValues: {
+      title: mode === 'edit' ? (stateValues?.title ?? '') : '',
+      content: mode === 'edit' ? (stateValues?.content ?? '') : '',
+    },
     validators: {
       onSubmit: CreatePostSchema,
       onBlur: CreatePostSchema,
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        await handleCreate(value);
+        if (mode === 'edit') {
+          await handleUpdate(postId, value);
+        } else {
+          await handleCreate(value);
+        }
+
         formApi.reset();
       } catch (error) {
         toast.error(error.response?.data?.message);
       }
     },
   });
+
+  useEffect(() => {
+    if (mode !== 'edit' || !stateValues) return;
+
+    form.reset({
+      title: stateValues.title ?? '',
+      content: stateValues.content ?? '',
+    });
+  }, [mode, stateValues, form]);
 
   return (
     <div className='flex min-h-screen flex-col bg-background'>
@@ -79,15 +104,25 @@ export default function CreatePost() {
               </div>
             </FieldGroup>
 
-            <span className='h-px bg-border' />
-
             <div className='flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center'>
-              <Button
-                type='submit'
-                className='inline-flex items-center gap-2 bg-foreground px-8 py-4 text-xs tracking-widest text-primary-foreground uppercase transition-opacity hover:opacity-80'
-              >
-                Publish post &rarr;
-              </Button>
+              <form.Subscribe selector={state => state.isSubmitting}>
+                {isSubmitting => (
+                  <Button
+                    type='submit'
+                    className='inline-flex items-center gap-2 bg-foreground px-8 py-4 text-xs tracking-widest text-primary-foreground uppercase transition-opacity hover:opacity-80'
+                    disabled={isSubmitting}
+                  >
+                    {mode === 'edit'
+                      ? isSubmitting
+                        ? 'Updating post...'
+                        : 'Update post'
+                      : isSubmitting
+                        ? 'Publishing'
+                        : 'Publish post'}
+                    <span aria-hidden='true'>&rarr;</span>
+                  </Button>
+                )}
+              </form.Subscribe>
             </div>
           </form>
         </div>

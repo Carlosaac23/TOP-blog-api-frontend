@@ -11,7 +11,7 @@ export default function PrivateProfile() {
 
   const name = `${auth?.firstName} ${auth?.lastName}`;
   const displayName = toSafeText(name, 'Anonymous Writer');
-  const username = toSafeText(auth?.username, 'unknown_user');
+  const username = toSafeText(auth?.username, 'unknown user');
   const email = toSafeText(auth?.email, 'No email available');
   const role = toSafeText(auth?.role, 'user');
   const memberSince = toSafeText(auth?.createdAt, 'Recently joined');

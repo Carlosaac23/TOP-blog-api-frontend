@@ -1,8 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { apiFetchJson } from '@/lib/apiFetch';
 
 export function useSignUp() {
+  const navigate = useNavigate();
+
   const handleSubmit = async values => {
     const rolePathUrl = values.role === 'user' ? 'users' : 'writers';
 
@@ -13,6 +16,7 @@ export function useSignUp() {
     });
 
     toast.success(message);
+    navigate('/sign-in');
   };
 
   return { handleSubmit };

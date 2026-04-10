@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { confirm } from '@/components/ConfirmDialog';
+import { useAuth } from '@/context/AuthProvider';
 import { apiFetchJson } from '@/lib/apiFetch';
 
 export function useDeleteAccount() {
+  const { logOut } = useAuth();
   const navigate = useNavigate();
 
   async function handleDelete(role, accountId) {
@@ -20,6 +22,7 @@ export function useDeleteAccount() {
       });
 
       toast.success(message ?? 'Account deleted successfully');
+      logOut();
       navigate('/');
     }
   }
